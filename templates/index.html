@@ -22,6 +22,7 @@
     <form action="" method="POST">
       {{ form.hidden_tag() }}
       <p>{{ form.username(size=32, placeholder="enter your name") }}</p>
+      <p> {{ form.workout() }}
       <p>{{ form.submit() }}</p>
     </form>
 </body>

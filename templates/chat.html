@@ -4,14 +4,69 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Exercise Session</title>
+    {% if title %}
+      <title>{{ title }} Session</title>
+    {% else %}
+      <title>Exercise Session</title>
+    {% endif %}
   </head>
   <body>
-    <h1>Exercising with ... </h1>
+    <h1> Let's do some {{ title }}! </h1>
+
     <div id="msgs"></div>
-    <form action="/chat">
-      <input type="text" placeholder="Type your message here">
+
+    <form id="messages_form">
+      <input type="text" id="message_input" placeholder="Type your message here">
       <button type="submit">➤</button>
     </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8">
+    const socket = io.connect("http://127.0.0.1:5000/");
+    socket.on('connect', function(){
+      socket.emit('join_room', {
+        username: "{{ username }}",
+        workout: "{{ workout }}"
+      });
+
+      let user_message = document.getElementById('message_input');
+      document.getElementById('messages_form').onsubmit = function(e){
+        e.preventDefault();
+        let message = user_message.value.trim();
+        if(message.length != 0)
+        {
+          socket.emit('send_message', {
+            username: "{{ username }}",
+            workout: "{{ workout }}",
+            message: message
+          })
+        }
+        user_message.value = '';
+        user_message.focus();
+      }
+    })
+
+    socket.on("receive_message", function(data){
+      console.log(data);
+      const newNode = document.createElement('div');
+      newNode.innerHTML = `<b>${data.username}</b>: ${data.message}`;
+      document.getElementById('msgs').appendChild(newNode);
+    })
+
+    socket.on('join_room_announcement', function(data)
+    {
+      console.log(data);
+      const newNode = document.createElement('div');
+      newNode.innerHTML = `<b>${data.username}</b> is ready to do some ${data.workout}!`;
+      document.getElementById('msgs').appendChild(newNode);
+    })
+
+    socket.on('leave_room_announcement', function (data) {
+        console.log(data);
+        const newNode = document.createElement('div');
+        newNode.innerHTML = `<b>${data.username}</b> is done doing ${data.workout}.`;
+        document.getElementById('msgs').appendChild(newNode);
+    });
+
+  </script>
   </body>
 </html>
