@@ -9,7 +9,8 @@ app.config['SECRET_KEY'] = '5b763eaf5b92e9fc20bde203c1c4f1cb'
 def home():
     form = UserInfo()
     if form.validate_on_submit():
-        print("success")
+        print(request.args.get('username'))
+        return redirect("/chat")
     return render_template("index.html", form=form)
 
 @app.route('/chat')
@@ -18,7 +19,7 @@ def chat():
     if username:
         return render_template("chat.html", username=username)
     else:
-        redirect('/')
+        return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)
