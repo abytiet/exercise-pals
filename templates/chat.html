@@ -26,11 +26,12 @@
     <div class= "messages" id="msgs"></div>
     <form id="messages_form">
       <input type="text" id="message_input" placeholder="Type your message here">
-      <button type="submit">➤</button><button id="thumbs_up" onclick="clickedup">👍</button>
-     <button id="thumbs_down"onclick="myFunction()">Click me</button>
+      <button type="submit">➤</button> <button id="thumbs_up" onclick="thumbup()">👍</button>
+     <button id="thumbs_down"onclick="thumbdown()">👎</button>
     </form>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script type="text/javascript" charset="utf-8">
+
     const socket = io.connect("http://127.0.0.1:5000/");
     socket.on('connect', function(){
       socket.emit('join_room', {
@@ -54,7 +55,24 @@
         user_message.focus();
       }
     })
-
+    function thumbup()
+    {
+        console.log("clicked");
+        socket.emit('send_message', {
+          username: "{{ username }}",
+          workout: "{{ workout }}",
+          message: "👍"
+        });
+    }
+    function thumbdown()
+    {
+        console.log("clicked");
+        socket.emit('send_message', {
+          username: "{{ username }}",
+          workout: "{{ workout }}",
+          message: "👎"
+        });
+    }
     socket.on("receive_message", function(data){
       console.log(data);
       document.getElementById("chat").innerHTML += `${data.username}: ${data.message}&#10;`;
