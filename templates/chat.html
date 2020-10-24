@@ -22,11 +22,12 @@
   </head>
   <body>
     <h1> Let's do some {{ title }}! </h1>
-    <textarea cols="30" rows="10" readonly id="chat" style="width: 500px; height: 250px; font-size: 18px; font-family: arial; margin-top: 10px; background-color: powderblue; overflow-y: auto;"></textarea>
+    <textarea cols="30" rows="10" readonly id="chat" style="width: 500px; height: 250px; font-size: 18px; font-family: arial; margin-top: 10px; background-color: powderblue; overflow-y:auto; resize:none;"></textarea>
     <div class= "messages" id="msgs"></div>
     <form id="messages_form">
       <input type="text" id="message_input" placeholder="Type your message here">
-      <button type="submit">➤</button>
+      <button type="submit">➤</button><button id="thumbs_up" onclick="clickedup">👍</button>
+     <button id="thumbs_down"onclick="myFunction()">Click me</button>
     </form>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script type="text/javascript" charset="utf-8">
