@@ -22,9 +22,8 @@
   </head>
   <body>
     <h1> Let's do some {{ title }}! </h1>
-
-    <div id="msgs"></div>
-
+    <textarea cols="30" rows="10" readonly id="chat" style="width: 500px; height: 250px; font-size: 18px; font-family: arial; margin-top: 10px; background-color: powderblue; overflow-y: auto;"></textarea>
+    <div class= "messages" id="msgs"></div>
     <form id="messages_form">
       <input type="text" id="message_input" placeholder="Type your message here">
       <button type="submit">➤</button>
@@ -57,24 +56,18 @@
 
     socket.on("receive_message", function(data){
       console.log(data);
-      const newNode = document.createElement('div');
-      newNode.innerHTML = `<b>${data.username}</b>: ${data.message}`;
-      document.getElementById('msgs').appendChild(newNode);
+      document.getElementById("chat").innerHTML += `${data.username}: ${data.message}&#10;`;
     })
 
     socket.on('join_room_announcement', function(data)
     {
       console.log(data);
-      const newNode = document.createElement('div');
-      newNode.innerHTML = `<i><b>${data.username}</b> is ready to do some ${data.workout}!</i>`;
-      document.getElementById('msgs').appendChild(newNode);
+      document.getElementById("chat").innerHTML += `&#10;${data.username} is ready to do some ${data.workout}!&#10;&#10;`;
     })
 
     socket.on('leave_room_announcement', function (data) {
         console.log(data);
-        const newNode = document.createElement('div');
-        newNode.innerHTML = `<b>${data.username}</b> is done doing ${data.workout}.`;
-        document.getElementById('msgs').appendChild(newNode);
+        document.getElementById("chat").innerHTML += `${data.username} is done doing ${data.workout}.&#10;`;
     });
 
   </script>
