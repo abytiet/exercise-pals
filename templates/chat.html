@@ -32,6 +32,7 @@
       input{
         border: none;
         padding: 4px;
+        width: 250px;
       }
       input:focus, textarea:focus
       {
@@ -44,18 +45,17 @@
   </head>
   <body>
     <h1> Let's do some {{ title }}! 💪</h1>
-    <textarea cols="30" rows="10" readonly id="chat" style="width: 500px; height: 250px; font-size: 18px; padding:15px;
+    <textarea cols="30" rows="10" readonly id="chat" style="width: 500px; height: 250px; font-size: 18px; padding:15px; padding-bottom: 0px;
     font-family: arial; margin-top: 10px; background-color: #c8e6da; overflow-y:auto; resize:none; border:none;">
   </textarea>
     <div class= "messages" id="msgs"></div>
     <form id="messages_form">
       <input type="text" id="message_input" placeholder="Type your message here">
-      <button type="submit" class="button">📩</button>
+      <button type="submit" class="button">SEND 📩</button>
       <button id="thumbs_up" onclick="thumbup()" class="button">👍</button>
      <button id="thumbs_down"onclick="thumbdown()" class="button">👎</button>
+  </script>
      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
      <button class="exit" onclick="returnhome()">Exit Session</button>
     </form>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
@@ -115,17 +115,20 @@
     socket.on("receive_message", function(data){
       console.log(data);
       document.getElementById("chat").innerHTML += `[${data.username}]: ${data.message}&#10;`;
+      chat_to_bottom();
     })
 
     socket.on('join_room_announcement', function(data)
     {
       console.log(data);
       document.getElementById("chat").innerHTML += `&#10;${data.username} is ready to do some ${data.workout}!&#10;&#10;`;
+      chat_to_bottom();
     })
 
     socket.on('leave_room_announcement', function (data) {
         console.log(data);
         document.getElementById("chat").innerHTML += `&#10;${data.username} is done doing ${data.workout}.&#10;&#10;`;
+        chat_to_bottom();
     });
 
     window.addEventListener("beforeunload", function(event){
@@ -133,6 +136,11 @@
           username: "{{ username }}",
           workout: "{{ workout }}"});
       });
+
+    function chat_to_bottom()
+    {
+      document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
+    }
   </script>
   </body>
 </html>
