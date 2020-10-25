@@ -73,6 +73,7 @@
           message: "👎"
         });
     }
+
     socket.on("receive_message", function(data){
       console.log(data);
       document.getElementById("chat").innerHTML += `${data.username}: ${data.message}&#10;`;
@@ -89,6 +90,11 @@
         document.getElementById("chat").innerHTML += `${data.username} is done doing ${data.workout}.&#10;`;
     });
 
+    window.addEventListener("beforeunload", function(event){
+          socket.emit('leave_room', {
+          username: "{{ username }}",
+          workout: "{{ workout }}"});
+      });
   </script>
   </body>
 </html>
