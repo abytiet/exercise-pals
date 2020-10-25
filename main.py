@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, session
-from flask_socketio import SocketIO, join_room, leave_room, send
+from flask_socketio import SocketIO, join_room, send
 from form import UserInfo
 
 app = Flask(__name__)
@@ -51,8 +51,8 @@ def handle_leave_room_event(data):
     username = data['username']
     workout = data['workout']
     #app.logger.info("{} has left the room {}".format(username, workout))
-    leave_room(workout)
     socketio.emit('leave_room_announcement', data, room=workout)
+    leave_room(workout)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
