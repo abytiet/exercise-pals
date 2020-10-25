@@ -18,16 +18,35 @@
         margin-top: 5%;
         margin-left: 25%;
       }
+      .button{
+        border: none;
+        background-color: white;
+        padding:2px;
+      }
+      input{
+        border: none;
+        padding: 4px;
+      }
+      input:focus, textarea:focus
+      {
+        border: 1px solid #c8e6da;
+        box-shadow: 0 0 3px #c8e6da;
+        outline-offset: 0px;
+        outline: none;
+      }
     </style>
   </head>
   <body>
     <h1> Let's do some {{ title }}! </h1>
-    <textarea cols="30" rows="10" readonly id="chat" style="width: 500px; height: 250px; font-size: 18px; font-family: arial; margin-top: 10px; background-color: powderblue; overflow-y:auto; resize:none;"></textarea>
+    <textarea cols="30" rows="10" readonly id="chat" style="width: 500px; height: 250px; font-size: 18px; padding:15px;
+    font-family: arial; margin-top: 10px; background-color: #c8e6da; overflow-y:auto; resize:none; border:none;">
+  </textarea>
     <div class= "messages" id="msgs"></div>
     <form id="messages_form">
       <input type="text" id="message_input" placeholder="Type your message here">
-      <button type="submit">➤</button> <button id="thumbs_up" onclick="thumbup()">👍</button>
-     <button id="thumbs_down"onclick="thumbdown()">👎</button>
+      <button type="submit" class="button">📩</button>
+      <button id="thumbs_up" onclick="thumbup()" class="button">👍</button>
+     <button id="thumbs_down"onclick="thumbdown()" class="button">👎</button>
     </form>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script type="text/javascript" charset="utf-8">
@@ -76,7 +95,7 @@
 
     socket.on("receive_message", function(data){
       console.log(data);
-      document.getElementById("chat").innerHTML += `${data.username}: ${data.message}&#10;`;
+      document.getElementById("chat").innerHTML += `[${data.username}]: ${data.message}&#10;`;
     })
 
     socket.on('join_room_announcement', function(data)
