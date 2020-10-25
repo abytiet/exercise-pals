@@ -128,6 +128,11 @@
         document.getElementById("chat").innerHTML += `&#10;${data.username} is done doing ${data.workout}.&#10;&#10;`;
     });
 
+    window.addEventListener("beforeunload", function(event){
+          socket.emit('leave_room', {
+          username: "{{ username }}",
+          workout: "{{ workout }}"});
+      });
   </script>
   </body>
 </html>
